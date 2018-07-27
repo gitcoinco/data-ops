@@ -30,9 +30,40 @@ Data schemas can be found in `models.py` for each Django app in [gitcoinco/web/a
 
 3. When working with `auth_user`, some filters to keep in mind to grab current and active (but not in the sense of engagement) are `active_user=True`, `is_staff=False`, and adjusting `date_joined` and `last_login` to ensure you are getting legitimate accounts.
 
-4. When working with `dashboard_bounty`, the timeline flow is generally `web3_created` -> `created_on` -> `fulfillment_started_on` -> `fulfillment_submitted_on` -> `fulfillment_accepted_on`. The `web3_created` time and `created_on` time should be similar (within 30 minutes)
+4. When working with `dashboard_bounty`, the timeline flow is generally `web3_created` -> `created_on` -> `fulfillment_started_on` -> `fulfillment_submitted_on` -> `fulfillment_accepted_on`. The `web3_created` time and `created_on` time should be similar (within 30 minutes).
 
-5. When working with `dashboard_bounty`, `_val_usd_db` is the value at the time of bounty creation in USDT, `value_in_usdt_now` is the value now. (What about `value_in_usdt`?)
+5. When working with `dashboard_bounty`, `_val_usd_db` is the value at the time of bounty creation in USDT, `value_in_usdt_now` is the value now. **What about `value_in_usdt`?**
 
 6. The `dashboard_bountyfulfillment` table contains fulfillment addresses and information on the user who is fulfilling a bounty.
 
+7. `dashboard_interest` denotes that a bounty has been started. **How does this compare with "started" on `dashboard_bounty`?**
+
+8. In `marketing_stat`, an "active" Slack user is someone who is online now (at the `created_on` time)
+
+9. In `marketing_stat` for twitter related `key`s the difference between `twitter_followers` and `twitter_followers_gitcoinfeed` is the former is the main account (getgitcoin) and the latter is a firehose gitcoinfeed account.
+
+11. In `marketing_stat`, what an "active email subscriber is someone who has not unsubscribed, compared to a regular email subscriber.
+
+12. In `marketing_stat`, there may be data loss for particular keys from end of January to March 1st due to production pushes.
+
+13. In `auth_users`, we may not have join information before April, taking a look at `dashboard_profile` might be useful.
+
+15. `dashboard_profile` was in use before `auth_user`, there might be a need to port a `joined_date` to `auth_user`
+
+16. The rules for open bounties are different for traditional bounties versus competitive and contest bounties (which stay open no matter how many fulfillments).
+
+```sql
+select
+    *
+from 
+    (select db.id, db.created_on, db.fulfillment_started_on, db.idx_status from dashboard_bounty db where db.idx_status = 'open') a
+left join (
+    select dbf.profile_id, dbf.bounty_id, dbf.fulfiller_address, dbf.created_on fulfilled_on from dashboard_bountyfulfillment dbf
+) b
+on 
+    a.id = b.bounty_id 
+where
+    a.id in (4453, 3855, 1087, 3519)
+;
+
+```
