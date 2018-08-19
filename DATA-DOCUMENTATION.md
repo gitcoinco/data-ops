@@ -24,6 +24,8 @@ Data schemas can be found in `models.py` for each Django app in [gitcoinco/web/a
 
 ## Data Tips
 
+Generally, if you have access to Metabase, check out how each metric is composed to get an understanding of what each Gitcoin table is used for. Additional tips below!
+
 1. When working with `dashboard_bounty`, you'll universally want to apply `current_bounty=True`, except if you're working with historical snapshots.
 
 2. When working with `dashboard_bounty`, constraining `idx_status` to a subset of `open`, `started`, `submitted`, and `done` is most accurate. 
@@ -42,15 +44,15 @@ Data schemas can be found in `models.py` for each Django app in [gitcoinco/web/a
 
 9. In `marketing_stat` for twitter related `key`s the difference between `twitter_followers` and `twitter_followers_gitcoinfeed` is the former is the main account (getgitcoin) and the latter is a firehose gitcoinfeed account.
 
-11. In `marketing_stat`, what an "active email subscriber is someone who has not unsubscribed, compared to a regular email subscriber.
+10. In `marketing_stat`, an active email subscriber is someone who has not unsubscribed, compared to a regular email subscriber.
 
-12. In `marketing_stat`, there may be data loss for particular keys from end of January to March 1st due to production pushes.
+11. In `marketing_stat`, there may be data loss for particular keys from end of January to March 1st due to production pushes.
 
-13. In `auth_users`, we may not have join information before April, taking a look at `dashboard_profile` might be useful.
+12. In `auth_users`, we may not have join information before April, taking a look at `dashboard_profile` might be useful.
 
-15. `dashboard_profile` was in use before `auth_user`, there might be a need to port a `joined_date` to `auth_user`
+13. `dashboard_profile` was in use before `auth_user`, there might be a need to port a `joined_date` to `auth_user`
 
-16. The rules for open bounties are different for traditional bounties versus competitive and contest bounties (which stay open no matter how many fulfillments).
+14. The rules for open bounties are different for traditional bounties versus competitive and contest bounties (which stay open no matter how many fulfillments).
 
 ```sql
 select
@@ -65,5 +67,4 @@ on
 where
     a.id in (4453, 3855, 1087, 3519)
 ;
-
 ```
