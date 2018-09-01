@@ -68,3 +68,9 @@ where
     a.id in (4453, 3855, 1087, 3519)
 ;
 ```
+
+## Known Issues
+
+1. Lifetime metrics pre May 2018 may have mismatches. See related [ticket](https://github.com/gitcoinco/data-ops/issues/15)
+
+2. Bounty metrics that rely on `dashboard_useraction` for submitted work actions may be inaccurate. Use `dashboard_bountyfulfillment` instead. For exploration and an example, see related [ticket](https://github.com/gitcoinco/data-ops/issues/16)
