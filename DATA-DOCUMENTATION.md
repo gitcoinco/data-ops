@@ -54,6 +54,8 @@ Generally, if you have access to Metabase, check out how each metric is composed
 
 14. The rules for open bounties are different for traditional bounties versus competitive and contest bounties (which stay open no matter how many fulfillments).
 
+15. Bounty metrics that rely on `dashboard_useraction` for submitted work actions must be combined with `dashboard_bountyfulfillment` (which records login, logout, and other actions. Migration of `useraction` to the `Activity` model is soon underway.
+
 ```sql
 select
     *
@@ -69,8 +71,10 @@ where
 ;
 ```
 
+15. IP addresses and location data for profiles can be found in `dashboard_useraction`.
+
+16. Preferred coding languages for profiles can be in `marketing_emailsubscriber`. 
+
 ## Known Issues
 
 1. Lifetime metrics pre May 2018 may have mismatches. See related [ticket](https://github.com/gitcoinco/data-ops/issues/15)
-
-2. Bounty metrics that rely on `dashboard_useraction` for submitted work actions may be inaccurate. Use `dashboard_bountyfulfillment` instead. For exploration and an example, see related [ticket](https://github.com/gitcoinco/data-ops/issues/16)
