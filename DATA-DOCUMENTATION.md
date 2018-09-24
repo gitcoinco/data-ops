@@ -77,4 +77,4 @@ where
 
 ## Known Issues
 
-1. Lifetime metrics pre May 2018 may have mismatches. See related [ticket](https://github.com/gitcoinco/data-ops/issues/15)
+1. Lifetime metrics pre May 2018 may have mismatches. See related [ticket](https://github.com/gitcoinco/data-ops/issues/15).
