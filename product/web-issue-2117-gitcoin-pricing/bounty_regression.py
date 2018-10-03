@@ -146,5 +146,6 @@ reg = linear_model.LinearRegression()
 reg.fit(features, response)
 
 # results
-for idx, feature_name in enumerate(ddf.drop(['value_in_usdt_now', 'value_in_usdt', 'value_usd_db', 'hourly_rate_distribution'], axis=1).columns):
+drop_cols = ['value_in_usdt_now', 'value_in_usdt', 'value_usd_db', 'hourly_rate_distribution']
+for idx, feature_name in enumerate(ddf.drop(drop_cols), axis=1).columns):
     print('feature: {}, coeff: {}'.format(feature_name, reg.coef_[idx]))
