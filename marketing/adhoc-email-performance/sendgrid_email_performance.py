@@ -27,9 +27,9 @@ for c in category_list:
 
     # set parameters
     params = {
-        'start_date': '2018-09-01', 
-        'end_date': '2018-09-21', 
-        'aggregated_by': 'month', 
+        'start_date': '2018-09-01',
+        'end_date': '2018-09-21',
+        'aggregated_by': 'month',
         'limit': 1,
         'offset': 1
     }
@@ -42,7 +42,10 @@ for c in category_list:
     date_col = pd.to_datetime(df['date']).reset_index(0)
     stats = json_normalize(df['stats'].apply(lambda x: x[0])).reset_index(0)
     final = date_col.merge(stats, on='index', how='inner')
-    final = final[['name', 'date', 'metrics.clicks', 'metrics.opens', 'metrics.unique_clicks', 'metrics.unique_opens', 'metrics.delivered']]
+    final = final[[
+        'name', 'date', 'metrics.clicks', 'metrics.opens', 'metrics.unique_clicks', 
+        'metrics.unique_opens', 'metrics.delivered'
+    ]]
     final['ctr'] = final['metrics.unique_clicks'] / final['metrics.unique_opens']
     final['read_rate'] = final['metrics.unique_opens'] / final['metrics.delivered']
     results.append(final)
@@ -50,5 +53,5 @@ for c in category_list:
 
 # concat and save final results
 final_result = pd.concat(results)
-final_result = final_result.sort_values(['ctr'], ascending=False)   
+final_result = final_result.sort_values(['ctr'], ascending=False)
 final_result.to_csv('email_performance.csv')

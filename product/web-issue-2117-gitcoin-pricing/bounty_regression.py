@@ -1,8 +1,5 @@
-import pandas as pd 
+import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import scipy.stats as stats
-from sklearn import preprocessing
 from sklearn import linear_model
 
 # load
@@ -18,7 +15,11 @@ df = df[
 # descriptive stats
 ds = df
 ds.loc[:, 'hourly_rate_distribution'] = ds['value_in_usdt'] / ds['fulfiller_hours_worked']
-ds = ds[['time_alloted_days', 'time_to_bounty_start_days', 'time_to_bounty_completion_days', 'bounty_type', 'project_length_category', 'experience_level',      'value_in_usdt', 'value_usd_db', 'value_in_usdt_now', 'hourly_rate_distribution']]
+ds = ds[[
+    'time_alloted_days', 'time_to_bounty_start_days', 'time_to_bounty_completion_days',
+    'bounty_type', 'project_length_category', 'experience_level',      
+    'value_in_usdt', 'value_usd_db', 'value_in_usdt_now', 'hourly_rate_distribution'
+]]
 
 ds.groupby('bounty_type')['value_in_usdt'].median()
 ds.groupby('project_length_category')['value_in_usdt'].median()
@@ -47,14 +48,14 @@ ds.groupby('experience_level')['value_in_usdt'].median()
 
 # dummy-ize and clean
 ddf = pd.get_dummies(df)
-ddf = ddf.fillna(0) # does this affect the regression?
+ddf = ddf.fillna(0)  # does this affect the regression?
 
 # remove outliers
 conts = [
-    'time_alloted_days',     
-    'time_to_bounty_start_days',   
-    'time_to_bounty_completion_days',     
-    'fulfiller_hours_worked'        
+    'time_alloted_days',
+    'time_to_bounty_start_days',
+    'time_to_bounty_completion_days',
+    'fulfiller_hours_worked'
 ]
 ddf[conts].mean()
 ddf[conts].median()
@@ -128,7 +129,12 @@ ddf = ddf[
 ]
 
 # feature prep
-features = np.array(ddf.drop(['value_in_usdt_now', 'value_in_usdt', 'value_usd_db', 'hourly_rate_distribution'], axis=1))
+features = np.array(
+    ddf.drop(
+        ['value_in_usdt_now', 'value_in_usdt', 'value_usd_db', 'hourly_rate_distribution'], 
+        axis=1
+    )
+)
 
 response = np.array(ddf['value_in_usdt'])
 # response = np.array(ddf['hourly_rate_distribution'])
@@ -142,5 +148,3 @@ reg.fit(features, response)
 # results
 for idx, feature_name in enumerate(ddf.drop(['value_in_usdt_now', 'value_in_usdt', 'value_usd_db', 'hourly_rate_distribution'], axis=1).columns):
     print('feature: {}, coeff: {}'.format(feature_name, reg.coef_[idx]))
-
-   
