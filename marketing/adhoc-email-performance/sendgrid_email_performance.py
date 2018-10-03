@@ -43,7 +43,7 @@ for c in category_list:
     stats = json_normalize(df['stats'].apply(lambda x: x[0])).reset_index(0)
     final = date_col.merge(stats, on='index', how='inner')
     final = final[[
-        'name', 'date', 'metrics.clicks', 'metrics.opens', 'metrics.unique_clicks', 
+        'name', 'date', 'metrics.clicks', 'metrics.opens', 'metrics.unique_clicks',
         'metrics.unique_opens', 'metrics.delivered'
     ]]
     final['ctr'] = final['metrics.unique_clicks'] / final['metrics.unique_opens']

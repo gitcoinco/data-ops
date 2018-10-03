@@ -17,7 +17,7 @@ ds = df
 ds.loc[:, 'hourly_rate_distribution'] = ds['value_in_usdt'] / ds['fulfiller_hours_worked']
 ds = ds[[
     'time_alloted_days', 'time_to_bounty_start_days', 'time_to_bounty_completion_days',
-    'bounty_type', 'project_length_category', 'experience_level',      
+    'bounty_type', 'project_length_category', 'experience_level',
     'value_in_usdt', 'value_usd_db', 'value_in_usdt_now', 'hourly_rate_distribution'
 ]]
 
@@ -131,7 +131,7 @@ ddf = ddf[
 # feature prep
 features = np.array(
     ddf.drop(
-        ['value_in_usdt_now', 'value_in_usdt', 'value_usd_db', 'hourly_rate_distribution'], 
+        ['value_in_usdt_now', 'value_in_usdt', 'value_usd_db', 'hourly_rate_distribution'],
         axis=1
     )
 )
