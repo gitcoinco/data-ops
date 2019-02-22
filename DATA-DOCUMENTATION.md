@@ -40,7 +40,7 @@ Generally, if you have access to Metabase, check out how each metric is composed
 
 7. `dashboard_interest` denotes that a bounty has been started. **How does this compare with "started" on `dashboard_bounty`?**
 
-8. In `marketing_stat`, an "active" Slack user is someone who is online now (at the `created_on` time)
+8. In `marketing_stat`, an "active" Slack user is someone who is online now (at the `created_on` time).
 
 9. In `marketing_stat` for twitter related `key`s the difference between `twitter_followers` and `twitter_followers_gitcoinfeed` is the former is the main account (getgitcoin) and the latter is a firehose gitcoinfeed account.
 
@@ -50,9 +50,11 @@ Generally, if you have access to Metabase, check out how each metric is composed
 
 12. In `auth_users`, we may not have join information before April, taking a look at `dashboard_profile` might be useful.
 
-13. `dashboard_profile` was in use before `auth_user`, there might be a need to port a `joined_date` to `auth_user`
+13. `dashboard_profile` was in use before `auth_user`, there might be a need to port a `joined_date` to `auth_user`.
 
 14. The rules for open bounties are different for traditional bounties versus competitive and contest bounties (which stay open no matter how many fulfillments).
+
+15. Bounty metrics that rely on `dashboard_useraction` for submitted work actions must be combined with `dashboard_bountyfulfillment` (which records login, logout, and other actions. Migration of `useraction` to the `Activity` model is soon underway.
 
 ```sql
 select
@@ -69,8 +71,10 @@ where
 ;
 ```
 
+15. IP addresses and location data for profiles can be found in `dashboard_useraction`.
+
+16. Preferred coding languages for profiles can be in `marketing_emailsubscriber`. 
+
 ## Known Issues
 
-1. Lifetime metrics pre May 2018 may have mismatches. See related [ticket](https://github.com/gitcoinco/data-ops/issues/15)
-
-2. Bounty metrics that rely on `dashboard_useraction` for submitted work actions may be inaccurate. Use `dashboard_bountyfulfillment` instead. For exploration and an example, see related [ticket](https://github.com/gitcoinco/data-ops/issues/16)
+1. Lifetime metrics pre May 2018 may have mismatches. See related [ticket](https://github.com/gitcoinco/data-ops/issues/15).
