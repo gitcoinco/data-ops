@@ -104,4 +104,6 @@ if __name__ == '__main__':
     print 'total minted kudos revenue: ${0}'.format(round(result['usd_amount'].sum(), 2))
     print 'minted kudos revenue by week: \n{0}'.format(result.groupby('week').agg({'usd_amount': 'sum'}).reset_index(0))
     print 'minted kudos revenue by month: \n{0}'.format(result.groupby('month').agg({'usd_amount': 'sum'}).reset_index(0))
+    print 'manual weekly sql update: \n{0}'.format(zip(result.groupby('week').agg({'usd_amount': 'sum'}).reset_index(0)['week'].astype(str), result.groupby('week').agg({'usd_amount': 'sum'}).reset_index(0)['usd_amount']))
+    print 'manual daily sql update: \n{0}'.format(zip(result['week'].astype(str), result['usd_amount']))
 
