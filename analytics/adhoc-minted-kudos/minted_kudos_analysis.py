@@ -19,8 +19,9 @@ def get_minted_kudos(data, coin_data):
     minted_kudos_txns.loc[:, 'timeStamp'] = pd.to_datetime(minted_kudos_txns['timeStamp'], unit='s').dt.date
     # coin conversions
     final = pd.merge(minted_kudos_txns, coin_data, how='left', left_on='timeStamp', right_on='_timestamp')
-    # add year and month
+    # add year and month and week
     final.loc[:, 'month'] = pd.to_datetime(final['_timestamp']).dt.to_period('M')
+    final.loc[:, 'week'] = pd.to_datetime(final['_timestamp']).dt.to_period('W').apply(lambda x: x.start_time)
     # revenue calculations
     final.loc[:, 'usd_amount'] = final['eth_value'] * final['close'] 
     return final
@@ -101,5 +102,6 @@ if __name__ == '__main__':
     result = get_minted_kudos(data, coin_data)
     # print final result
     print 'total minted kudos revenue: ${0}'.format(round(result['usd_amount'].sum(), 2))
+    print 'minted kudos revenue by week: \n{0}'.format(result.groupby('week').agg({'usd_amount': 'sum'}).reset_index(0))
     print 'minted kudos revenue by month: \n{0}'.format(result.groupby('month').agg({'usd_amount': 'sum'}).reset_index(0))
 
