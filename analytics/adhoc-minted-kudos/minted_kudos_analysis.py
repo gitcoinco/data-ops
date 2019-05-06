@@ -15,7 +15,7 @@ def get_minted_kudos(data, coin_data):
     df = json_normalize(data['result'])
     df.loc[:, 'eth_value'] = df['value'].astype('int64') / 1000000000000000000
     # timestamp to date
-    minted_kudos_txns = df[df['eth_value'] == 0.4]
+    minted_kudos_txns = df[df.eth_value.isin([0.4, 0.45, 0.5])]
     minted_kudos_txns.loc[:, 'timeStamp'] = pd.to_datetime(minted_kudos_txns['timeStamp'], unit='s').dt.date
     # coin conversions
     final = pd.merge(minted_kudos_txns, coin_data, how='left', left_on='timeStamp', right_on='_timestamp')
